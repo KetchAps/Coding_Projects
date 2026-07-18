@@ -4,6 +4,7 @@ public class Main {
 	
 	String[][] students = new String[20][3];
 	int size = 0;
+	int unique_ids = 0;
 	
 	Scanner rd = new Scanner(System.in);
 	
@@ -43,7 +44,7 @@ public class Main {
 			System.out.print("Database is full.");
 			return;
 		}
-		int id = size;
+		int id = unique_ids++;
 		String name;
 		int grades;
 		System.out.print("Set Student's Name:");
@@ -87,7 +88,10 @@ public class Main {
 		if(id == -1) return;
 		
 		int result = BinarySearch(id);
-		
+		if(result == -1) {
+			System.out.println("No matching record found.");
+			return;
+		}
 		System.out.println("Matching Student Record found for \"" + id + "\":");
 		System.out.println("Student Name: " + students[result][1] + "\n" +
 							"Student Grades: " + students[result][2]);
@@ -102,7 +106,10 @@ public class Main {
 		if(id == -1) return;
 		
 		int result = BinarySearch(id);
-		
+		if(result == -1) {
+			System.out.println("No matching record found.");
+			return;
+		}
 		System.out.print("Input New Grade Record: ");
 		while(true) {
 			System.out.print("Enter Student Record ID: ");
@@ -125,7 +132,10 @@ public class Main {
 		if(id == -1) return;
 		
 		int result = BinarySearch(id);
-		
+		if(result == -1) {
+			System.out.println("No matching record found.");
+			return;
+		}
 		for(int i = result; i < 20; i++) {
 			if(i != 19) {
 				students[i][0] = students[i + 1][0];
@@ -149,15 +159,16 @@ public class Main {
 	int BinarySearch(int id) {
 		int low = 0;
 		int high = size;
-		int mid;
+		int mid = 0;
+		int lastMidPoint = -1;
 		while(true) {
+			if(lastMidPoint == mid) return -1;
+			lastMidPoint = mid;
 			mid = (low + high) / 2;
 			int query = Integer.parseInt(students[mid][0]);
 			if(id == query) break;
 			else if (id > query) low = mid + 1;
 			else if (id < query) high = mid - 1;
-			
-			
 			}
 		return mid;
 		
