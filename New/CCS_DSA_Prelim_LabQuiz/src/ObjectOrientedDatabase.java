@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
-public class Main {
+public class ObjectOrientedDatabase {
 	
-	String[][] students = new String[20][3];
+	Node[] students = new Node[20];
 	int size = 0;
 	int unique_ids = 0;
 	
 	Scanner rd = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		Main main = new Main();
+		ObjectOrientedDatabase main = new ObjectOrientedDatabase();
 		
 		int in;
 		while(true) {
@@ -60,9 +60,7 @@ public class Main {
 			System.out.println("Invalid Input.");
 		}
 		}
-		students[size][0] = String.valueOf(id);   //ID
-		students[size][1] = name; //Name
-		students[size][2] = String.valueOf(grades); // Grades
+		students[size] = new Node(name, id, grades);
 		
 		System.out.print("New Student Record successfully created for " + name);
 		size++;
@@ -72,23 +70,26 @@ public class Main {
 	void DisplayStudents() {
 		System.out.println("ID\t|     Name       |   Grades");
 		for(int r = 0; r < size; r++) {
-			for(int c = 0; c < 3; c++) {
+			String name = students[r].GetName();
+			int id = students[r].GetID();
+			int grade = students[r].GetGrades();
 				
-				if(c != 0) {
-					int spaces = (c == 1) ? 10 : 20;
-					int length = spaces - students[r][c - 1].length();
-					for(int s = length; s > 0; s--) System.out.print(" ");
-					
-				}
-				
-				System.out.print(students[r][c]);
-				
-				
+				System.out.print(id);
+				spaceMaker(String.valueOf(id), 10);
+				System.out.print(name);
+				spaceMaker(name, 20);
+				System.out.print(grade);
+				System.out.println();
 			}
 			
-			System.out.println();
+			
 		}
 		
+	
+
+	void spaceMaker(String spacer, int spaces) {
+			int length = spaces - spacer.length();
+			for(int s = length; s > 0; s--) System.out.print(" ");	
 	}
 	
 	void SearchStudent() {
@@ -101,8 +102,8 @@ public class Main {
 			return;
 		}
 		System.out.println("Matching Student Record found for \"" + id + "\":");
-		System.out.println("Student Name: " + students[result][1] + "\n" +
-							"Student Grades: " + students[result][2]);
+		System.out.println("Student Name: " + students[result].GetName() + "\n" +
+							"Student Grades: " + students[result].GetGrades());
 		
 	}
 	
@@ -128,7 +129,7 @@ public class Main {
 				System.out.println("Invalid Input.");
 			}
 			}
-		students[result][2] = String.valueOf(id);
+		students[result].SetGrades(id);
 		System.out.println("Record Updated successfully");
 	}
 	
@@ -146,14 +147,10 @@ public class Main {
 		}
 		for(int i = result; i < 20; i++) {
 			if(i != 19) {
-				students[i][0] = students[i + 1][0];
-				students[i][1] = students[i + 1][1];
-				students[i][2] = students[i + 1][2];	
+				students[i] = students[i + 1];
 			}
 			else {
-				students[i][0] = null;
-				students[i][1] = null;
-				students[i][2] = null;	
+				students[i] = null;
 				
 			}
 		}
@@ -170,7 +167,7 @@ public class Main {
 			if(lastMidPoint == mid) return -1;
 			lastMidPoint = mid;
 			mid = (low + high) / 2;
-			int query = Integer.parseInt(students[mid][0]);
+			int query = students[mid].GetID();
 			if(id == query) break;
 			else if (id > query) low = mid + 1;
 			else if (id < query) high = mid - 1;
