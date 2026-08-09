@@ -9,7 +9,9 @@
 		list.add("cabbage"); //2
 		list.add("corn"); //3
 		list.add("eggplant"); //4
-		list.delete(2);
+		//list.addAt("dragonfruit", 0);
+		list.addAt("pumpkin", 3);
+		//list.delete(2);
 		
 		for(int i = 0; i < list.size(); i++) System.out.print("(" + i + ")" + list.get(i) + " ");
 		
